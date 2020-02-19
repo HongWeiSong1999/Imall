@@ -71,7 +71,7 @@ public class UserServiceImpl implements IUserService {
      * @ Param [username, password]
      **/
     @Override
-    public ResponseVo<User> loginUser(String username, String password) {
+    public ResponseVo<User> userLogin(String username, String password) {
 
         //1、先通过username查出数据库中的User类
         User user = userDao.selectByUsername(username);
@@ -88,7 +88,9 @@ public class UserServiceImpl implements IUserService {
         if(!passwordIsTrue){
             return ResponseVo.error(USERNAME_OR_PASSWORD_ERROR);
         }
+        //4、返回的时候，会有密码也显示出来，这个地方的话，就给他设置为一个空的密码就好了
+        user.setPassword("");
 
-        return ResponseVo.succcess();
+        return ResponseVo.succcess(user);
     }
 }

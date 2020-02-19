@@ -41,8 +41,8 @@ public class ResponseVo<T> {
         return new ResponseVo<T>(ResponseEnum.SUCCESS_STATUS.getCode(), msg);
     }
 
-    public static <T> ResponseVo<T> succcess(T msg) {
-        return new ResponseVo<T>(ResponseEnum.SUCCESS_STATUS.getCode(), msg);
+    public static <T> ResponseVo<T> succcess(T data) {
+        return new ResponseVo<T>(ResponseEnum.SUCCESS_STATUS.getCode(), data);
     }
 
     public static <T> ResponseVo<T> succcess() {
