@@ -27,6 +27,13 @@ public class UserServiceImpl implements IUserService {
     @Resource
     private UserDao userDao;
 
+    /**
+     * @ Author hongweisong
+     * @ Description 用户注册功能
+     * @ Points 判断用户名、密码是否存在，传进来的密码先加密再和数据库里面进行对比，最后再传入数据库中
+     * @ Date 19:54 2020/2/19
+     * @ Param [user]
+     **/
     @Override
     public ResponseVo<User> registerUser(User user) {
         //1、判断用户名在数据库中是否存在
@@ -45,11 +52,43 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(DigestUtils.md5DigestAsHex
                 (user.getPassword().getBytes(StandardCharsets.UTF_8)));
 
-        //4、放入数据库
+        //4、开始的时候先对role进行赋值
+        user.setRole(1);
+
+        //5、放入数据库
         int registerUser = userDao.insertSelective(user);
         if(registerUser == 0){
             return ResponseVo.error(SERVICE_ERROR);
         }
+        return ResponseVo.succcess();
+    }
+
+    /**
+     * @ Author hongweisong
+     * @ Description 用户登录
+     * @ Points
+     * @ Date 19:57 2020/2/19
+     * @ Param [username, password]
+     **/
+    @Override
+    public ResponseVo<User> loginUser(String username, String password) {
+
+        //1、先通过username查出数据库中的User类
+        User user = userDao.selectByUsername(username);
+
+        //2、如果通过用户名差不到用户的话，就提示用户名或密码错误
+        if(user == null){
+            return ResponseVo.error(USERNAME_OR_PASSWORD_ERROR);
+        }
+
+        /*3、输入的密码进行加密后 和数据库里的密码进行比较，并且比较的时候忽略大小写
+         如果错误的话，返回用户名或者密码错误*/
+        boolean passwordIsTrue = user.getPassword().equalsIgnoreCase
+                (DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8)));
+        if(!passwordIsTrue){
+            return ResponseVo.error(USERNAME_OR_PASSWORD_ERROR);
+        }
+
         return ResponseVo.succcess();
     }
 }

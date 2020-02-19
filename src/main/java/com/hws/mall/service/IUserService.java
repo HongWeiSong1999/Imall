@@ -13,4 +13,6 @@ import com.hws.mall.vo.ResponseVo;
  */
 public interface IUserService {
     ResponseVo<User> registerUser(User user);
+
+    ResponseVo<User> loginUser(String username, String password);
 }

@@ -84,7 +84,7 @@ public class Category {
     }
 
     public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+        this.setCreateTime(createTime);
     }
 
     public Date getUpdateTime() {
@@ -92,7 +92,7 @@ public class Category {
     }
 
     public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+        this.setUpdateTime(updateTime);
     }
 
     @Override
