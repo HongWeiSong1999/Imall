@@ -25,4 +25,10 @@ public class RunTimeExceptionHandler {
     public ResponseVo handle(RuntimeException e){
         return ResponseVo.error(ResponseEnum.SERVICE_ERROR, e.getMessage());
     }
+
+    @ExceptionHandler(UserLoginException.class)
+    @ResponseBody
+    public ResponseVo userLoginHandler(){
+        return ResponseVo.error(ResponseEnum.NEED_LOGIN);
+    }
 }

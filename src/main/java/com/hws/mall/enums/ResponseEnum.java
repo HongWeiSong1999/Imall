@@ -16,7 +16,7 @@ public enum ResponseEnum {
 
     SERVICE_ERROR(-1,"服务端错误"), //服务端错误，返回-1
 
-    SUCCESS_STATUS(0,"注册成功"), //响应成功的状态为0
+    SUCCESS_STATUS(0,"成功"), //响应成功的状态为0
 
     FAIL_STATUS(1,"密码错误"), //用户密码错误的是1
 

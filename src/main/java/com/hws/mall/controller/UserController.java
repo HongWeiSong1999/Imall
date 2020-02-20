@@ -43,14 +43,14 @@ public class UserController {
      **/
     @PostMapping("/user/register")
     public ResponseVo<User> register(@Valid @RequestBody UserRegisterForm userRegisterForm,
-                                     BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            log.info("注册提交的参数有误 {} {}",bindingResult.getFieldError().getField(),
+                                     BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.info("注册提交的参数有误 {} {}", bindingResult.getFieldError().getField(),
                     bindingResult.getFieldError().getDefaultMessage());
-            return ResponseVo.error(PARAM_ERROR,bindingResult);
+            return ResponseVo.error(PARAM_ERROR, bindingResult);
         }
         User user = new User();
-        BeanUtils.copyProperties(userRegisterForm,user);
+        BeanUtils.copyProperties(userRegisterForm, user);
         return userService.registerUser(user);
     }
 
@@ -63,9 +63,9 @@ public class UserController {
      **/
     @PostMapping("/user/login")
     public ResponseVo<User> login(@Valid @RequestBody UserLoginFrom userLoginFrom,
-                                  BindingResult bindingResult, HttpSession session){
-        if(bindingResult.hasErrors()){
-            log.error("登录失败 {} {}",bindingResult.getFieldError().getField(),
+                                  BindingResult bindingResult, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            log.error("登录失败 {} {}", bindingResult.getFieldError().getField(),
                     bindingResult.getFieldError().getDefaultMessage());
             return ResponseVo.error(ResponseEnum.USERNAME_OR_PASSWORD_ERROR);
         }
@@ -73,8 +73,8 @@ public class UserController {
         ResponseVo<User> userResponseVo = userService.userLogin(userLoginFrom.getUsername(), userLoginFrom.getPassword());
 
         //设置data,这里的话，只设置用户的data就好了，类似于是 (key,value)形式的
-        session.setAttribute(CURRENT_USER,userResponseVo.getData());
-
+        session.setAttribute(CURRENT_USER, userResponseVo.getData());
+        log.info("/user/login session = {}", session.getId());
         return userResponseVo;
     }
 
@@ -86,19 +86,42 @@ public class UserController {
      * @ Param [session]
      **/
     @GetMapping("/user")
-    public ResponseVo<User> userInfo(HttpSession session){
+    public ResponseVo<User> userInfo(HttpSession session) {
+
+        //打印拿到的这个session
+        log.info("/user session = {}", session.getId());
 
         //1、这里的话，就只要拿到这个CURRENT_USER的值就好了
         //(key,value)，这里的话，只要拿到这个key的值，就可以得到这个User的值
-        User sessionAttribute = (User)session.getAttribute(CURRENT_USER);
+        User sessionAttribute = (User) session.getAttribute(CURRENT_USER);
 
-        //2、判断是不是为空
-        if(sessionAttribute == null){
+        /*//2、判断是不是为空   不需要判断是否登录了，有拦截器在就好了
+        if (sessionAttribute == null) {
             return ResponseVo.error(NEED_LOGIN);
-        }
+        }*/
 
         return ResponseVo.succcess(sessionAttribute);
     }
 
+    /**
+     * @ Author hongweisong
+     * @ Description 用户登出
+     * @ Points //判断登录状态，使用拦截器
+     * @ Date 13:59 2020/2/20
+     * @ Param
+     **/
+    @PostMapping("/user/loginout")
+    public ResponseVo<User> loginout(HttpSession session){
+        log.info("/user/loginout session = {}",session.getId());
+        //判断得到的这个session存不存在
+        User sessionAttribute = (User)session.getAttribute(CURRENT_USER);
+        /* 不需要判断是否登录了，有拦截器在就好了
+        if(sessionAttribute == null){
+            return ResponseVo.error(NEED_LOGIN);
+        }*/
+
+        session.removeAttribute(CURRENT_USER);
+        return ResponseVo.succcess(sessionAttribute);
+    }
 
 }

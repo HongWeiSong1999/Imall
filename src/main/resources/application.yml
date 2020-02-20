@@ -9,3 +9,7 @@ mybatis:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mapperxml/*.xml
+server:
+  servlet:
+    session:
+      timeout: 300
