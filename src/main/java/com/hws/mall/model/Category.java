@@ -1,32 +1,61 @@
 package com.hws.mall.model;
 
+import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
- * ClassName:Category
- * Package:com.hws.mall.model
- * Description:
- *
- * @ date:2020/2/15 21:52
- * @ author:hws
- */
-public class Category {
+* ClassName:MallCategory
+* Package:com.hws.mall.model
+* Description:
+* @ date:2020/2/21 11:08
+* @ author:hws
+*/
+
+@Data
+public class Category implements Serializable {
+    /**
+    * 类别Id
+    */
     private Integer id;
 
+    /**
+    * 父类别id当id=0时说明是根节点,一级类别
+    */
     private Integer parentId;
 
+    /**
+    * 类别名称
+    */
     private String name;
 
+    /**
+    * 类别状态1-正常,2-已废弃
+    */
     private Integer status;
 
+    /**
+    * 排序编号,同类展示顺序,数值相等则自然排序
+    */
     private Integer sortOrder;
 
+    /**
+    * 创建时间
+    */
     private Date createTime;
 
+    /**
+    * 更新时间
+    */
     private Date updateTime;
+
 
     public Category(){
 
+    }
+
+    public Category(Integer id){
+        this.setId(id);
     }
 
     public Category(Integer id, Integer parentId, String name, Integer status, Integer sortOrder, Date createTime, Date updateTime) {
@@ -36,62 +65,6 @@ public class Category {
         this.setStatus(status);
         this.setSortOrder(sortOrder);
         this.setCreateTime(createTime);
-        this.setUpdateTime(updateTime);
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getSortOrder() {
-        return sortOrder;
-    }
-
-    public void setSortOrder(Integer sortOrder) {
-        this.sortOrder = sortOrder;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.setCreateTime(createTime);
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
         this.setUpdateTime(updateTime);
     }
 
@@ -107,4 +80,6 @@ public class Category {
                 ", updateTime=" + updateTime +
                 '}';
     }
+
+    private static final long serialVersionUID = 1L;
 }

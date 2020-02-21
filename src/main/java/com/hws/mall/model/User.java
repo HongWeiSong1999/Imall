@@ -54,8 +54,14 @@ public class User implements Serializable {
      */
     private Date updateTime;
 
+
     public User(){
 
+    }
+
+    public User(String username, String password) {
+        this.setUsername(username);
+        this.setPassword(password);
     }
 
     public User(String username, String password, String email, Integer role) {

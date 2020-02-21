@@ -26,6 +26,8 @@ public enum ResponseEnum {
 
     EMAIL_EXIT(4,"邮箱已经存在"), //邮箱已经存在的是4
 
+    CATEGORY_NOT_EXIT(5,"类别不存在"), //类别不存在是5
+
     NEED_LOGIN(10,"用户未登录，请先登录"), //用户未登录为10
 
     USERNAME_OR_PASSWORD_ERROR(11,"用户名或密码错误"), //用户名或者密码错误为11

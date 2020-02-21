@@ -2,22 +2,28 @@ package com.hws.mall.dao;
 
 import com.hws.mall.model.Category;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 /**
- * ClassName:CategoryDao
- * Package:com.hws.mall.dao
- * Description:
- *
- * @ date:2020/2/15 22:03
- * @ author:hws
- */
+* ClassName:MallCategoryMapper
+* Package:com.hws.mall.dao
+* Description:
+* @ date:2020/2/21 11:08
+* @ author:hws
+*/
+
 @Mapper
 public interface CategoryDao {
+    int deleteByPrimaryKey(Integer id);
 
-    @Select("select * from mall_category where id = #{id}")
-    Category findByCategoryId(@Param("id")Integer id);
+    int insert(Category record);
 
-    Category findByXmlId(Integer id);
+    int insertSelective(Category record);
+
+    Category selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(Category record);
+
+    int updateByPrimaryKey(Category record);
+
+    int countByPrimaryKey(Integer id);
 }
