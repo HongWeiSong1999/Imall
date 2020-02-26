@@ -12,4 +12,4 @@ mybatis:
 server:
   servlet:
     session:
-      timeout: 300
+      timeout: 600

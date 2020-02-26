@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class RunTimeExceptionHandler {
 
-    @ExceptionHandler(RuntimeException.class)
+/*    @ExceptionHandler(RuntimeException.class)
     @ResponseBody
     //@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     public ResponseVo handle(RuntimeException e){
@@ -30,5 +30,5 @@ public class RunTimeExceptionHandler {
     @ResponseBody
     public ResponseVo userLoginHandler(){
         return ResponseVo.error(ResponseEnum.NEED_LOGIN);
-    }
+    }*/
 }

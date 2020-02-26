@@ -1,7 +1,10 @@
 package com.hws.mall.service;
 
 import com.hws.mall.model.Category;
+import com.hws.mall.vo.CategoryVo;
 import com.hws.mall.vo.ResponseVo;
+
+import java.util.List;
 
 /**
  * ClassName:ICategoryService
@@ -12,5 +15,7 @@ import com.hws.mall.vo.ResponseVo;
  * @ author:hws
  */
 public interface ICategoryService {
-    ResponseVo<Category> getUserInfo(Integer id);
+
+    ResponseVo<List<CategoryVo>> selectAll();
+
 }

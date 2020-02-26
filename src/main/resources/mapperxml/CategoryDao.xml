@@ -123,4 +123,11 @@
     from mall_category
     where id = #{id}
   </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mall_category
+    where status = 1
+  </select>
+
 </mapper>

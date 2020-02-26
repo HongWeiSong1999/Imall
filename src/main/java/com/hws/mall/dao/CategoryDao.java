@@ -1,7 +1,12 @@
 package com.hws.mall.dao;
 
 import com.hws.mall.model.Category;
+import com.hws.mall.vo.CategoryVo;
+import com.hws.mall.vo.ResponseVo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.awt.*;
+import java.util.List;
 
 /**
 * ClassName:MallCategoryMapper
@@ -11,7 +16,6 @@ import org.apache.ibatis.annotations.Mapper;
 * @ author:hws
 */
 
-@Mapper
 public interface CategoryDao {
     int deleteByPrimaryKey(Integer id);
 
@@ -26,4 +30,6 @@ public interface CategoryDao {
     int updateByPrimaryKey(Category record);
 
     int countByPrimaryKey(Integer id);
+
+    List<Category> selectAll();
 }

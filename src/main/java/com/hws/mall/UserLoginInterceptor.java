@@ -33,27 +33,18 @@ public class UserLoginInterceptor implements HandlerInterceptor {
      * @ Param
      **/
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-        log.info("preHandle..");
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        log.info("preHandle...");
         //获取session
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(CURRENT_USER);
+        User user = (User) request.getSession().getAttribute(CURRENT_USER);
         //判断session中是否有用户数据，如果有，则返回true，继续向下执行;如果没有，返回false
         if (user == null) {
            // response.getWriter().print("error");
             // return false;
+            log.info("user=null");
             throw new UserLoginException();
         }
         return true;
     }
 
-    @Override
-    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-
-    }
-
-    @Override
-    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-
-    }
 }
