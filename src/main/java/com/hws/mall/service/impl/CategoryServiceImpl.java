@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.hws.mall.consts.MallConst.ROOT_PARENT_ID;
@@ -21,7 +22,7 @@ import static com.hws.mall.consts.MallConst.ROOT_PARENT_ID;
  * Description:
  *
  * @ date:2020/2/21 11:34
- * @ author:hws
+ * @author:hws
  */
 @Service
 public class CategoryServiceImpl implements ICategoryService {
@@ -29,6 +30,12 @@ public class CategoryServiceImpl implements ICategoryService {
     @Resource
     private CategoryDao categoryDao;
 
+    /**
+     * @ Description 实现所有的分类信息
+     * @ Points 从父目录到子目录
+     * @ Date 17:19 2020/2/26
+     * @ Param []
+     **/
     @Override
     public ResponseVo<List<CategoryVo>> selectAll(){
         List<Category> categories = categoryDao.selectAll();
@@ -43,26 +50,39 @@ public class CategoryServiceImpl implements ICategoryService {
 				categoryVoList.add(categoryVo);
 			}
 		}
+        categoryVoList.sort(Comparator.comparing(CategoryVo::getSortOrder).reversed());
+        findSubCategory(categoryVoList, categories);
         return ResponseVo.succcess(categoryVoList);
     }
 
-    /*@Override
-    public ResponseVo<List<CategoryVo>> selectAll() {
+    //耗时：http(请求) > mysql查询 > 内存(java程序)
+    //mysql(内网+磁盘的形式)
+    //严禁在for循环里面写http请求或者sql语句
 
-        List<CategoryVo> categoryVoList = new ArrayList<>();
-        //1、从数据库中查出符合条件的数据
-        List<Category> categories = categoryDao.selectAll();
+    /**
+     * 定义查询子目录的方式
+     */
+    private void findSubCategory(List<CategoryVo> categoryVoList, List<Category> categories) {
+        for (CategoryVo categoryVo : categoryVoList) {
+            List<CategoryVo> subCategoryVoList = new ArrayList<>();
 
-        //2、对查出来的数据进行比较,先查出parents_id = 0 的
-        for (Category category : categories) {
-            //2.1 先和parents进行比较
-            if(ROOT_PARENT_ID.equals(category.getParentId())){
-                //2.2 如果是的话，先构造一个CategoryVo的对象
-                CategoryVo categoryVo = new CategoryVo();
-                BeanUtils.copyProperties(category,categoryVo);
-                categoryVoList.add(categoryVo);
+            for (Category category : categories) {
+                //如果查到内容，设置subCategory, 继续往下查
+                if (categoryVo.getId().equals(category.getParentId())) {
+                    CategoryVo subCategoryVo = category2CategoryVo(category);
+                    subCategoryVoList.add(subCategoryVo);
+                }
+                subCategoryVoList.sort(Comparator.comparing(CategoryVo::getSortOrder).reversed());
+                categoryVo.setSubCategories(subCategoryVoList);
+
+                findSubCategory(subCategoryVoList,categories);
             }
         }
-        return ResponseVo.succcess(categoryVoList);
-    }*/
+    }
+
+    private CategoryVo category2CategoryVo(Category category) {
+        CategoryVo categoryVo = new CategoryVo();
+        BeanUtils.copyProperties(category, categoryVo);
+        return categoryVo;
+    }
 }
